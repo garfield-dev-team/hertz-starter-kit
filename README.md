@@ -63,6 +63,29 @@ go mod tidy
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 ```
 
+我们只需要在对应的 `hello_service.go` 中添加业务逻辑即可。顺便还发现，service 中的方法默认都添加了 Swagger 注释，可以很方便生成接口文档，比如：
+
+```go
+// HelloMethod .
+// @router /hello [GET]
+func HelloMethod(ctx context.Context, c *app.RequestContext) {
+        var err error
+        var req example.HelloReq
+        err = c.BindAndValidate(&req)
+        if err != nil {
+                c.String(400, err.Error())
+                return
+        }
+
+        resp := new(example.HelloResp)
+
+        // You can modify the logic of the entire function, not just the current template
+        resp.RespBody = "hello," + req.Name // added logic
+
+        c.JSON(200, resp)
+}
+```
+
 如果更新了 IDL 文件，只需要运行：
 
 ```bash
