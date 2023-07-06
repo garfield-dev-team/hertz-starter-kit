@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/pkg/errors"
 	user "hertz-starter-kit/biz/model/user"
 )
 
@@ -17,7 +18,9 @@ func Register(ctx context.Context, c *app.RequestContext) {
 	var req user.RegisterRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		// 业务代码中将错误存放到app.RequestContext中直接退出
+		//c.String(consts.StatusBadRequest, err.Error())
+		_ = c.Error(errors.WithStack(err))
 		return
 	}
 
@@ -33,7 +36,8 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	var req user.LoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		//c.String(consts.StatusBadRequest, err.Error())
+		_ = c.Error(errors.WithStack(err))
 		return
 	}
 
@@ -49,7 +53,8 @@ func Info(ctx context.Context, c *app.RequestContext) {
 	var req user.InfoRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		//c.String(consts.StatusBadRequest, err.Error())
+		_ = c.Error(errors.WithStack(err))
 		return
 	}
 

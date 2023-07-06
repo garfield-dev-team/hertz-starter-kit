@@ -4,11 +4,12 @@ package main
 
 import (
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"hertz-starter-kit/biz/middleware"
 )
 
 func main() {
 	h := server.Default()
-
+	h.Use(middleware.GlobalErrorHandler)
 	register(h)
 	h.Spin()
 }
