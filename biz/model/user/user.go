@@ -238,8 +238,8 @@ func (p *BaseResp) String() string {
 }
 
 type RegisterRequest struct {
-	Username string `thrift:"username,1" form:"username" json:"username" query:"username"`
-	Password string `thrift:"password,2" form:"password" json:"password" query:"password"`
+	Username string `thrift:"username,1" form:"username" json:"username" query:"username" vd:"len($)>0"`
+	Password string `thrift:"password,2" form:"password" json:"password" query:"password" vd:"len($)>0"`
 }
 
 func NewRegisterRequest() *RegisterRequest {

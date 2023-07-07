@@ -4,11 +4,24 @@ package main
 
 import (
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	hertzzap "github.com/hertz-contrib/logger/zap"
 	"hertz-starter-kit/biz/middleware"
 )
 
+func Init() {
+	logger := hertzzap.NewLogger()
+	hlog.SetLogger(logger)
+	hlog.SetLevel(hlog.LevelDebug)
+}
+
 func main() {
-	h := server.Default()
+	Init()
+	h := server.Default(
+		server.WithHostPorts(":8080"),
+		server.WithBasePath("/api/"),
+		server.WithHandleMethodNotAllowed(true),
+	)
 	h.Use(middleware.GlobalErrorHandler)
 	register(h)
 	h.Spin()

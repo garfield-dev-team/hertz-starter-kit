@@ -4,11 +4,12 @@ package user
 
 import (
 	"context"
-
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/pkg/errors"
 	user "hertz-starter-kit/biz/model/user"
+	"hertz-starter-kit/pkg/errcode"
+	"hertz-starter-kit/pkg/utils"
 )
 
 // Register .
@@ -20,13 +21,15 @@ func Register(ctx context.Context, c *app.RequestContext) {
 	if err != nil {
 		// 业务代码中将错误存放到app.RequestContext中直接退出
 		//c.String(consts.StatusBadRequest, err.Error())
-		_ = c.Error(errors.WithStack(err))
+		_ = c.Error(errors.WithStack(errcode.NewInvalidError(err)))
 		return
 	}
 
+	hlog.CtxInfof(ctx, "")
+
 	resp := new(user.RegisterResponse)
 
-	c.JSON(consts.StatusOK, resp)
+	utils.NewResponse(c).ToResponse(resp)
 }
 
 // Login .
@@ -36,14 +39,13 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	var req user.LoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		//c.String(consts.StatusBadRequest, err.Error())
-		_ = c.Error(errors.WithStack(err))
+		_ = c.Error(errors.WithStack(errcode.NewInvalidError(err)))
 		return
 	}
 
 	resp := new(user.LoginResponse)
 
-	c.JSON(consts.StatusOK, resp)
+	utils.NewResponse(c).ToResponse(resp)
 }
 
 // Info .
@@ -53,12 +55,11 @@ func Info(ctx context.Context, c *app.RequestContext) {
 	var req user.InfoRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		//c.String(consts.StatusBadRequest, err.Error())
-		_ = c.Error(errors.WithStack(err))
+		_ = c.Error(errors.WithStack(errcode.NewInvalidError(err)))
 		return
 	}
 
 	resp := new(user.InfoResponse)
 
-	c.JSON(consts.StatusOK, resp)
+	utils.NewResponse(c).ToResponse(resp)
 }

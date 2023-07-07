@@ -7,8 +7,8 @@ struct BaseResp {
 }
 
 struct RegisterRequest {
-    1: string username;
-    2: string password;
+    1: string username (api.vd="len($)>0");
+    2: string password (api.vd="len($)>0");
 }
 
 struct RegisterResponse {
