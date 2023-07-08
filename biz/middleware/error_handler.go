@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"hertz-starter-kit/pkg/errcode"
 	"hertz-starter-kit/pkg/utils"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/pkg/errors"
 )
 
 func GlobalErrorHandler(ctx context.Context, c *app.RequestContext) {
@@ -22,7 +22,7 @@ func GlobalErrorHandler(ctx context.Context, c *app.RequestContext) {
 	err := hertzErr.Unwrap()
 	// 打印异常堆栈
 	hlog.CtxErrorf(ctx, "%+v", err)
-	response := utils.NewResponse(c)
+	resp := utils.NewResp(c)
 
 	// 注意这种写法断言失败会 panic
 	//code := errors.Cause(err).(*errcode.ErrorCode)
@@ -34,8 +34,8 @@ func GlobalErrorHandler(ctx context.Context, c *app.RequestContext) {
 	// 如果找到一个与目标类型匹配的错误，errors.As 函数会将其赋值给传入的指针，并返回 true
 	// 如果没有找到匹配的错误，errors.As 函数会将传入的指针赋值为 nil，并返回 false
 	if errors.As(err, &code) {
-		response.ToErrorResponse(code)
+		resp.Error(code)
 	} else {
-		response.ToErrorResponse(errcode.NewServerError(errors.New("unknown error")))
+		resp.Error(errcode.NewServerError(errors.New("unknown error")))
 	}
 }

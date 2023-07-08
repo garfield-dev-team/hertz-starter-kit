@@ -28,11 +28,13 @@ func (e *ErrorCode) WithDetails(details ...string) *ErrorCode {
 	newError := *e
 	// 注意切片是引用类型，需要浅拷贝
 	newError.details = details[:]
+	// 还有另一种写法
+	//newError.details = append(newError.details, details...)
 	return &newError
 }
 
 func (e *ErrorCode) Error() string {
-	return fmt.Sprintf("%d:%s", e.code, e.msg)
+	return fmt.Sprintf("%#v", e)
 }
 
 var (

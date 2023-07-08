@@ -9,14 +9,13 @@ import (
 	"hertz-starter-kit/biz/middleware"
 )
 
-func Init() {
-	logger := hertzzap.NewLogger()
-	hlog.SetLogger(logger)
-	hlog.SetLevel(hlog.LevelDebug)
-}
-
 func main() {
-	Init()
+	logger := hertzzap.NewLogger()
+	// 在程序结束时调用 logger.Sync() 来确保日志缓冲区中的所有条目都被写入
+	defer logger.Sync()
+	//hlog.SetLogger(logger)
+	hlog.SetLevel(hlog.LevelInfo)
+
 	h := server.Default(
 		server.WithHostPorts(":8080"),
 		server.WithBasePath("/api/"),

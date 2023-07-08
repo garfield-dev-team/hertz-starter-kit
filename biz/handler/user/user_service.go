@@ -4,12 +4,13 @@ package user
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/pkg/errors"
 	user "hertz-starter-kit/biz/model/user"
 	"hertz-starter-kit/pkg/errcode"
 	"hertz-starter-kit/pkg/utils"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/pkg/errors"
 )
 
 // Register .
@@ -34,7 +35,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(user.RegisterResponse)
 
-	utils.NewResponse(c).ToResponse(resp)
+	utils.NewResp(c).Success(resp)
 }
 
 // Login .
@@ -50,7 +51,7 @@ func Login(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(user.LoginResponse)
 
-	utils.NewResponse(c).ToResponse(resp)
+	utils.NewResp(c).Success(resp)
 }
 
 // Info .
@@ -66,5 +67,5 @@ func Info(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(user.InfoResponse)
 
-	utils.NewResponse(c).ToResponse(resp)
+	utils.NewResp(c).Success(resp)
 }

@@ -1,10 +1,11 @@
 package utils
 
 import (
+	"hertz-starter-kit/pkg/errcode"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"hertz-starter-kit/pkg/errcode"
 )
 
 type BaseResp struct {
@@ -18,18 +19,18 @@ type Response struct {
 	Ctx *app.RequestContext
 }
 
-func NewResponse(ctx *app.RequestContext) *Response {
+func NewResp(ctx *app.RequestContext) *Response {
 	return &Response{Ctx: ctx}
 }
 
-func (r *Response) ToResponse(data any) {
+func (r *Response) Success(data any) {
 	if data == nil {
 		data = utils.H{}
 	}
 	r.Ctx.JSON(consts.StatusOK, &BaseResp{Result: data})
 }
 
-func (r *Response) ToErrorResponse(err *errcode.ErrorCode) {
+func (r *Response) Error(err *errcode.ErrorCode) {
 	resp := &BaseResp{
 		Code:    err.GetCode(),
 		Message: err.GetMessage(),
