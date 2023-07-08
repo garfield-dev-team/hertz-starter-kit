@@ -17,6 +17,11 @@ import (
 func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req user.RegisterRequest
+
+	// 注意，hertz 虽然也提供了一些 api 用于获取 query 参数、路径参数、body 、表单参数等
+	// 这里推荐直接用 `c.BindAndValidate` 参数绑定到结构体，不需要关心从哪里获取参数
+	// 默认情况下，可以绑定 query 参数、json 和 form 参数
+	// 如果需要指定传参方式，则可以在 IDL 文件中添加自定义注解
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		// 业务代码中将错误存放到app.RequestContext中直接退出

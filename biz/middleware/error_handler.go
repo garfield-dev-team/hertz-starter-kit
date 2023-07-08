@@ -35,5 +35,7 @@ func GlobalErrorHandler(ctx context.Context, c *app.RequestContext) {
 	// 如果没有找到匹配的错误，errors.As 函数会将传入的指针赋值为 nil，并返回 false
 	if errors.As(err, &code) {
 		response.ToErrorResponse(code)
+	} else {
+		response.ToErrorResponse(errcode.NewServerError(errors.New("unknown error")))
 	}
 }

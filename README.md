@@ -104,6 +104,27 @@ $ ./build.sh
 $ ./output/bootstrap.sh
 ```
 
+IDL 语法参考：
+
+```thrift
+// 如何添加参数校验规则
+struct RegisterRequest {
+    1: string username (api.vd="len($)>0");
+    2: string password (api.vd="len($)>0");
+}
+
+// 注意，默认情况下，`c.BindAndValidate` 可以绑定 url query 参数、body 的 json 和 form 参数
+// 如果不需要 query 参数，则可以这样写
+struct RegisterRequest {
+    1: string username (api.body="name", api.form="name", api.vd="len($)>0");
+    2: string password (api.vd="len($)>0");
+}
+```
+
+https://github.com/cloudwego/hertz-examples/blob/main/bizdemo/hertz_gorm/idl/api.thrift
+
+https://github.com/cloudwego/hertz-examples/blob/main/bizdemo/hertz_gorm_gen/idl/user/user.proto
+
 参考：
 
 https://www.cloudwego.io/docs/hertz/tutorials/toolkit/usage/usage-thrift/
