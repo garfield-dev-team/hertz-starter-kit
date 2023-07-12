@@ -23,3 +23,14 @@ services:
       - MINIO_SECRET_KEY=s3manager
       - MINIO_ADDRESS=0.0.0.0:9000
       - MINIO_CONSOLE_ADDRESS=0.0.0.0:9001
+  mysql:
+    image: mysql:latest
+    container_name: hertzapp_mysql
+    environment:
+      - MYSQL_DATABASE=gorm
+      - MYSQL_USER=gorm
+      - MYSQL_PASSWORD=gorm
+      - MYSQL_RANDOM_ROOT_PASSWORD="yes"
+#      - MYSQL_ROOT_PASSWORD=gorm
+    ports:
+      - "3306:3306"
