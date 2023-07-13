@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"hertz-starter-kit/biz/dal"
+
 	hertzzap "github.com/hertz-contrib/logger/zap"
 	"hertz-starter-kit/biz/middleware"
 	"hertz-starter-kit/pkg/setting"
@@ -21,6 +23,10 @@ func main() {
 	defer logger.Sync()
 	//hlog.SetLogger(logger)
 	hlog.SetLevel(hlog.LevelInfo)
+
+	if err := dal.SetupConn(); err != nil {
+		panic(fmt.Errorf("fail to connect database: %w", err))
+	}
 
 	h := server.Default(
 		server.WithHostPorts(":8080"),

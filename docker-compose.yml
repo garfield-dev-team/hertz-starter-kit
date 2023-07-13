@@ -1,9 +1,11 @@
+version: '3'
+
 services:
   hertz_app:
     container_name: hertz_starter_kit
     build: .
     ports:
-      - 8080:8080
+      - '8080:8080'
     environment:
       - ENDPOINT=s3:9000
       - ACCESS_KEY_ID=s3manager
@@ -16,20 +18,20 @@ services:
     image: docker.io/minio/minio
     command: server /data
     ports:
-      - 9000:9000
-      - 9001:9001
+      - '9000:9000'
+      - '9001:9001'
     environment:
       - MINIO_ACCESS_KEY=s3manager
       - MINIO_SECRET_KEY=s3manager
       - MINIO_ADDRESS=0.0.0.0:9000
       - MINIO_CONSOLE_ADDRESS=0.0.0.0:9001
   mysql:
-    image: mysql:latest
+    image: 'mysql:latest'
     container_name: hertzapp_mysql
     environment:
-      - MYSQL_DATABASE=gorm
-      - MYSQL_USER=gorm
-      - MYSQL_PASSWORD=gorm
+      - MYSQL_DATABASE=gorm # dbname
+      - MYSQL_USER=gorm # user
+      - MYSQL_PASSWORD=gorm # pass
       - MYSQL_RANDOM_ROOT_PASSWORD="yes"
 #      - MYSQL_ROOT_PASSWORD=gorm
     ports:
