@@ -26,8 +26,12 @@ func (e *ErrorCode) GetDetails() []string {
 
 func (e *ErrorCode) WithDetails(details ...string) *ErrorCode {
 	newError := *e
-	// 注意切片是引用类型，需要浅拷贝
-	newError.details = details[:]
+	// 切片是引用类型，需要 copy 一份
+	// 注意，不推荐这种方式，底层都会引用同一个数组
+	// newError.details = details[:]
+	// 常规做法是用 append 将一个切片追加到另一个切片中
+	// 还有一种更简单的写法
+	newError.details = append([]string(nil), details...)
 	// 还有另一种写法
 	//newError.details = append(newError.details, details...)
 	return &newError
