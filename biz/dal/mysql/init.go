@@ -25,9 +25,13 @@ func Init() (err error) {
 		// 打印 GORM 为我们生成的 SQL
 		Logger: logger.Default.LogMode(logger.Info),
 	})
-	if err != nil {
-		return
-	}
-	//err = DB.AutoMigrate(&User{})
 	return
+}
+
+func Migrate() error {
+	// 可以一次性将多个模型结构体对应的表进行创建或更新，比如：
+	// DB.AutoMigrate(&model1{}, &model2{}, &model3{})
+	// 注意，当模型结构体中有外键关联时，需要按照依赖关系的顺序进行创建
+	// 比如，model1 有一个外键关联到 model2，则需要先创建 model2 的表，再创建 model1 的表
+	return DB.AutoMigrate(&User{})
 }
