@@ -2,36 +2,34 @@ package setting
 
 import (
 	"time"
-
-	"github.com/spf13/viper"
 )
 
 type ServerSettingS struct {
-	RunMode      string
-	HttpPort     string
-	ReadTimeout  time.Duration
-	WriteTimeout time.Duration
+	RunMode      string        `json:"run_mode" mapstructure:"run_mode"`
+	HttpPort     string        `json:"http_port" mapstructure:"http_port"`
+	ReadTimeout  time.Duration `json:"read_timeout" mapstructure:"read_timeout"`
+	WriteTimeout time.Duration `json:"write_timeout" mapstructure:"write_timeout"`
 }
 
 type AppSettingS struct {
-	DefaultPageSize int
-	MaxPageSize     int
-	LogSavePath     string
-	LogFileName     string
-	LogFileExt      string
+	DefaultPageSize int    `json:"default_page_size" mapstructure:"default_page_size"`
+	MaxPageSize     int    `json:"max_page_size" mapstructure:"max_page_size"`
+	LogSavePath     string `json:"log_save_path" mapstructure:"log_save_path"`
+	LogFileName     string `json:"log_file_name" mapstructure:"log_file_name"`
+	LogFileExt      string `json:"log_file_ext" mapstructure:"log_file_ext"`
 }
 
 type DatabaseSettingS struct {
-	DBType       string
-	UserName     string
-	Password     string
-	Host         string
-	DBName       string
-	TablePrefix  string
-	Charset      string
-	ParseTime    bool
-	MaxIdleConns int
-	MaxOpenConns int
+	Type         string `json:"type"`
+	UserName     string `json:"username"`
+	Password     string `json:"password"`
+	Host         string `json:"host"`
+	Name         string `json:"name"`
+	TablePrefix  string `json:"table_prefix" mapstructure:"table_prefix"`
+	Charset      string `json:"charset"`
+	ParseTime    bool   `json:"parse_time" mapstructure:"parse_time"`
+	MaxIdleConns int    `json:"max_idle_conns" mapstructure:"max_idle_conns"`
+	MaxOpenConns int    `json:"max_open_conns" mapstructure:"max_open_conns"`
 }
 
 var (
@@ -39,23 +37,3 @@ var (
 	AppSetting      *AppSettingS
 	DatabaseSetting *DatabaseSettingS
 )
-
-func SetupSetting() (err error) {
-	vp := viper.New()
-	vp.SetConfigName("config")
-	vp.AddConfigPath("configs/")
-	vp.SetConfigType("yaml")
-	if err = vp.ReadInConfig(); err != nil {
-		return
-	}
-	if err = vp.UnmarshalKey("Server", &ServerSetting); err != nil {
-		return
-	}
-	if err = vp.UnmarshalKey("App", &AppSetting); err != nil {
-		return
-	}
-	if err = vp.UnmarshalKey("Database", &DatabaseSetting); err != nil {
-		return
-	}
-	return
-}

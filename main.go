@@ -3,27 +3,19 @@
 package main
 
 import (
-	"fmt"
 	"hertz-starter-kit/biz/dal"
 	"hertz-starter-kit/biz/middleware"
+	"hertz-starter-kit/pkg/logger"
 	"hertz-starter-kit/pkg/setting"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
-	hertzzap "github.com/hertz-contrib/logger/zap"
 )
 
 func main() {
-	if err := setting.SetupSetting(); err != nil {
-		panic(fmt.Errorf("fatal error configs file: %w", err))
-	}
-
-	logger := hertzzap.NewLogger()
-	// 在程序结束时调用 logger.Sync() 来确保日志缓冲区中的所有条目都被写入
-	defer logger.Sync()
-	//hlog.SetLogger(logger)
-	hlog.SetLevel(hlog.LevelInfo)
-
+	// 读取配置
+	setting.SetupSetting()
+	// 日志相关
+	logger.SetupLogger()
 	// 连接数据库、自动迁移 schema
 	dal.SetupConn()
 

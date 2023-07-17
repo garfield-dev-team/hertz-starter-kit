@@ -1,22 +1,22 @@
-Server:
-  RunMode: debug
-  HttpPort: 8000
-  ReadTimeout: 60
-  WriteTimeout: 60
-App:
-  DefaultPageSize: 10
-  MaxPageSize: 100
-  LogSavePath: storage/logs
-  LogFileName: hertz_app
-  LogFileExt: .log
-Database:
-  DBType: mysql
-  Username: root  # 填写你的数据库账号
-  Password: rootroot  # 填写你的数据库密码
-  Host: 127.0.0.1:3306
-  DBName: hertz_app_service
-  TablePrefix: hertz_
-  Charset: utf8
-  ParseTime: True
-  MaxIdleConns: 10
-  MaxOpenConns: 30
+server:
+  run_mode: debug
+  http_port: 8000
+  read_timeout: 60
+  write_timeout: 60
+app:
+  default_pageSize: 10
+  max_page_size: 100
+  log_save_path: storage/logs
+  log_file_name: hertz_app
+  log_file_ext: .log
+database:
+  type: mysql
+  username: root  # 填写你的数据库账号
+  password: rootroot  # 填写你的数据库密码
+  host: 127.0.0.1:3306
+  name: hertz_app_service
+  table_prefix: hertz_
+  charset: utf8mb4
+  parse_time: True
+  max_idle_conns: 10
+  max_open_conns: 30
