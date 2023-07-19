@@ -1,19 +1,30 @@
 package mysql
 
 import (
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+
+	"hertz-starter-kit/pkg/config"
 )
 
 // 正确处理 `time.Time` 需要带上 parseTime 参数
 // 支持完整的 UTF-8 编码，需要用 charset=utf8mb4
 // 注意，dbname 是 docker-compose 的 MYSQL_DATABASE
-var dsn = "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
+//var dsn = "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
 
 var DB *gorm.DB
 
 func Init() (err error) {
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		config.Config.Database.UserName,
+		config.Config.Database.Password,
+		config.Config.Database.Host,
+		config.Config.Database.Port,
+		config.Config.Database.Name,
+	)
 	// GORM 配置参考
 	// https://gorm.io/zh_CN/docs/gorm_config.html
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{

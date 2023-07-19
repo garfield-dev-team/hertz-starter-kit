@@ -11,10 +11,11 @@ app:
   log_file_ext: .log
 database:
   type: mysql
-  username: root  # 填写你的数据库账号
-  password: rootroot  # 填写你的数据库密码
-  host: 127.0.0.1:3306
-  name: hertz_app_service
+  username: gorm  # 填写你的数据库账号
+  password: gorm  # 填写你的数据库密码
+  host: 127.0.0.1
+  port: 3306
+  name: gorm
   table_prefix: hertz_
   charset: utf8mb4
   parse_time: True

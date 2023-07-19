@@ -5,15 +5,15 @@ package main
 import (
 	"hertz-starter-kit/biz/dal"
 	"hertz-starter-kit/biz/middleware"
+	"hertz-starter-kit/pkg/config"
 	"hertz-starter-kit/pkg/logger"
-	"hertz-starter-kit/pkg/setting"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
 func main() {
 	// 读取配置
-	setting.SetupSetting()
+	config.SetupConfig()
 	// 日志相关
 	logger.SetupLogger()
 	// 连接数据库、自动迁移 schema

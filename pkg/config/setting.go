@@ -1,4 +1,4 @@
-package setting
+package config
 
 import (
 	"time"
@@ -24,6 +24,7 @@ type DatabaseSettingS struct {
 	UserName     string `json:"username"`
 	Password     string `json:"password"`
 	Host         string `json:"host"`
+	Port         string `json:"port"`
 	Name         string `json:"name"`
 	TablePrefix  string `json:"table_prefix" mapstructure:"table_prefix"`
 	Charset      string `json:"charset"`
@@ -32,8 +33,10 @@ type DatabaseSettingS struct {
 	MaxOpenConns int    `json:"max_open_conns" mapstructure:"max_open_conns"`
 }
 
-var (
-	ServerSetting   *ServerSettingS
-	AppSetting      *AppSettingS
-	DatabaseSetting *DatabaseSettingS
-)
+type SettingS struct {
+	Server   *ServerSettingS   `json:"server" mapstructure:"server"`
+	App      *AppSettingS      `json:"app" mapstructure:"app"`
+	Database *DatabaseSettingS `json:"database" mapstructure:"database"`
+}
+
+var Config *SettingS
