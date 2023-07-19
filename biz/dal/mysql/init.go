@@ -17,14 +17,19 @@ import (
 var DB *gorm.DB
 
 func Init() (err error) {
-	dsn := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		config.Config.Database.UserName,
-		config.Config.Database.Password,
-		config.Config.Database.Host,
-		config.Config.Database.Port,
-		config.Config.Database.Name,
-	)
+	// 本地调试的时候没有读取配置，`config.Config` 空指针解引用会 panic
+	// 这里设置一个默认值，给本地调试用
+	dsn := "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
+	if config.Config != nil {
+		dsn = fmt.Sprintf(
+			"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			config.Config.Database.UserName,
+			config.Config.Database.Password,
+			config.Config.Database.Host,
+			config.Config.Database.Port,
+			config.Config.Database.Name,
+		)
+	}
 	// GORM 配置参考
 	// https://gorm.io/zh_CN/docs/gorm_config.html
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{

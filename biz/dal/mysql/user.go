@@ -1,14 +1,18 @@
 package mysql
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
+// User GORM 结构体标签参考：
+// https://gorm.io/zh_CN/docs/models.html#%E5%AD%97%E6%AE%B5%E6%A0%87%E7%AD%BE
 type User struct {
 	gorm.Model
-	UserName        string `json:"user_name"`
-	Password        string `json:"password"`
-	Avatar          string `json:"avatar"`
-	BackgroundImage string `json:"background_image"`
-	Signature       string `json:"signature"`
+	UserName        string `json:"user_name" gorm:"type:varchar(100);not null"`
+	Password        string `json:"password" gorm:"type:varchar(100);not null"`
+	Avatar          string `json:"avatar" gorm:"type:varchar(255)"`
+	BackgroundImage string `json:"background_image" gorm:"type:varchar(255)"`
+	Signature       string `json:"signature" gorm:"type:varchar(255)"`
 }
 
 func CreateUser(user *User) (uint, error) {
