@@ -22,13 +22,13 @@ func TestCreateUser(t *testing.T) {
 
 func TestQueryUserById(t *testing.T) {
 	_ = Init()
-	user, err := QueryUserById(1)
+	user, err := QueryUserById(8)
 	if err != nil {
 		fmt.Printf("%v", err)
 		return
 	}
 
-	fmt.Printf("%v", user)
+	fmt.Printf("%+v\n", user)
 }
 
 func TestQueryUsers(t *testing.T) {
