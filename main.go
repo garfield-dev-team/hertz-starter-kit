@@ -17,7 +17,7 @@ func main() {
 	// 日志相关
 	logger.SetupLogger()
 	// 连接数据库、自动迁移 schema
-	dal.SetupConn()
+	dal.SetupDataBase()
 
 	h := server.Default(
 		server.WithHostPorts(":8080"),

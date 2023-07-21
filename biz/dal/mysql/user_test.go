@@ -9,12 +9,12 @@ import (
 func TestCreateUser(t *testing.T) {
 	_ = Init()
 	u := &User{
-		UserName: "test",
+		UserName: "test666",
 		Password: "123456",
 	}
 	user_id, err := CreateUser(u)
 	if err != nil {
-		fmt.Printf("%v", false)
+		fmt.Printf("%v\n", err)
 		return
 	}
 	fmt.Printf("%v", user_id)
@@ -22,7 +22,7 @@ func TestCreateUser(t *testing.T) {
 
 func TestQueryUserById(t *testing.T) {
 	_ = Init()
-	user, err := QueryUserById(8)
+	user, err := QueryUserById(1)
 	if err != nil {
 		fmt.Printf("%v", err)
 		return

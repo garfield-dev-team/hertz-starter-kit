@@ -6,7 +6,7 @@ import (
 	"hertz-starter-kit/biz/dal/mysql"
 )
 
-func SetupConn() {
+func SetupDataBase() {
 	if err := mysql.Init(); err != nil {
 		panic(fmt.Errorf("fail to connect database: %w", err))
 	}

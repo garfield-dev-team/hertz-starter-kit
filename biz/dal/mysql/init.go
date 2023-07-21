@@ -11,6 +11,7 @@ import (
 
 // 正确处理 `time.Time` 需要带上 parseTime 参数
 // 支持完整的 UTF-8 编码，需要用 charset=utf8mb4
+// 还有一个 collation 参数无需设置，默认就是 utf8mb4_general_ci
 // 注意，dbname 是 docker-compose 的 MYSQL_DATABASE
 //var dsn = "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
 
