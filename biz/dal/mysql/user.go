@@ -9,6 +9,8 @@ type User struct {
 	Avatar          string `json:"avatar" gorm:"type:varchar(255);default:''"`
 	BackgroundImage string `json:"background_image" gorm:"type:varchar(255);default:''"`
 	Signature       string `json:"signature" gorm:"type:varchar(255);default:''"`
+
+	Articles []Article `json:"articles"`
 }
 
 func CreateUser(user *User) (uint, error) {
