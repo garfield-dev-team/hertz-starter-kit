@@ -25,7 +25,7 @@ func CreateCategory(category *Category) (uint, error) {
 // 查询某个分类下关联的文章
 func QueryCategoryById(id uint) (*Category, error) {
 	var category *Category
-	result := DB.Where("id = ?", id).Limit(1).Find(&category)
+	result := DB.Model(&category).Preload("Articles").Where("id = ?", id).Limit(1).Find(&category)
 	if err := result.Error; err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func QueryCategoryById(id uint) (*Category, error) {
 // 查询全部分类列表
 func QueryCategories() ([]*Category, error) {
 	var categories []*Category
-	if err := DB.Find(&categories).Error; err != nil {
+	if err := DB.Model(&Category{}).Preload("Articles").Find(&categories).Error; err != nil {
 		return nil, err
 	}
 	return categories, nil

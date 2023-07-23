@@ -28,8 +28,11 @@ func CreateArticle(article *Article) (uint, error) {
 // 查询指定文章，可以外键关联作者、分类等
 func QueryArticleById(id uint) (*Article, error) {
 	var article *Article
-
-	result := DB.Where("id = ?", id).Limit(1).Find(&article)
+	// 用 Preload 连表查询 article 关联的 category
+	// 注意两点：
+	// 1. 查询到 category 中 article 是 null
+	// 2. 注意传入 Model 需要结构体指针，不能用 []*Article 类型
+	result := DB.Model(&article).Preload("Categories").Where("id = ?", id).Limit(1).Find(&article)
 	if err := result.Error; err != nil {
 		return nil, err
 	}
@@ -42,7 +45,7 @@ func QueryArticles(pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
 	// 支持分页查询
 	offset := (pageNum - 1) * pageSize
-	result := DB.Limit(pageSize).Offset(offset).Find(&articles)
+	result := DB.Model(&Article{}).Preload("Categories").Limit(pageSize).Offset(offset).Find(&articles)
 
 	if err := result.Error; err != nil {
 		return nil, err
@@ -51,6 +54,8 @@ func QueryArticles(pageNum, pageSize int) ([]*Article, error) {
 }
 
 func UpdateArticle(article *Article) error {
+	// 用结构体更新的时候，可以直接 `DB.Updates(article)` 这样写
+	// GORM 也支持 map 方式更新，注意这种情况必须 `DB.Model()` 指定表名
 	return DB.Model(&article).Updates(article).Error
 }
 

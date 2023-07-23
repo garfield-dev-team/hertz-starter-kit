@@ -93,8 +93,8 @@ func TestQueryCategoryById(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "Get category 1",
-			args: args{id: 1},
+			name: "Get category 3",
+			args: args{id: 3},
 		},
 	}
 	for _, tt := range tests {

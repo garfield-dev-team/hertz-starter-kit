@@ -46,6 +46,10 @@ func QueryUserById(id uint) (*User, error) {
 
 func QueryUsers() ([]*User, error) {
 	var users []*User
+	// 注意两点：
+	// 1. GORM 也支持 `Find()` 传入 map 指针查询，此时必须 `db.Model()` 指定表名
+	// 2. GORM 查询默认通配符 `SELECT *` 方式，也可以用 Select 方法指定需要查询的字段
+	// db.Select("column1, column2").Find(&result)
 	if err := DB.Find(&users).Error; err != nil {
 		return nil, err
 	}

@@ -131,8 +131,33 @@ func TestUpdateArticle(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "Edit article 1",
-			args:    args{article: &Article{BaseModel: &BaseModel{ID: 1}, Desc: "更新文章描述2333"}},
+			name: "Edit article 1",
+			args: args{
+				article: &Article{
+					BaseModel: &BaseModel{ID: 1},
+					Desc:      "更新234234文章描述666",
+					// 关联新分类，会自动在 category 表插入数据
+					Categories: []*Category{
+						{Name: "TypeScript 相关"},
+						{Name: "Python 相关"},
+					},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "Edit article 2",
+			args: args{
+				article: &Article{
+					BaseModel: &BaseModel{ID: 2},
+					Desc:      "更新文章描述234223234234",
+					// 关联已有分类，只需要传入 category 表的 ID 字段
+					Categories: []*Category{
+						{BaseModel: &BaseModel{ID: 1}},
+						{BaseModel: &BaseModel{ID: 2}},
+					},
+				},
+			},
 			wantErr: false,
 		},
 	}

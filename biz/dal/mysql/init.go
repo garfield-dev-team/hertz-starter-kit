@@ -50,5 +50,8 @@ func Migrate() error {
 	// DB.AutoMigrate(&model1{}, &model2{}, &model3{})
 	// 注意，当模型结构体中有外键关联时，需要按照依赖关系的顺序进行创建
 	// 比如，model1 有一个外键关联到 model2，则需要先创建 model2 的表，再创建 model1 的表
+
+	// 如果两张表有互相依赖，比如 many to many，则任意顺序创建即可
+	// 注意，many to many 实际上依赖的是一张连接表
 	return DB.AutoMigrate(&User{}, &Article{}, &Category{})
 }
