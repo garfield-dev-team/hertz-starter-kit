@@ -1,45 +1,88 @@
 package mysql
 
 import (
-	"fmt"
-	"github.com/cloudwego/hertz/pkg/common/json"
+	"encoding/json"
 	"testing"
 )
 
 func TestCreateUser(t *testing.T) {
-	_ = Init()
-	u := &User{
-		UserName: "test666",
-		Password: "123456",
+	type args struct {
+		user *User
 	}
-	user_id, err := CreateUser(u)
-	if err != nil {
-		fmt.Printf("%v\n", err)
-		return
+	tests := []struct {
+		name    string
+		args    args
+		want    uint
+		wantErr bool
+	}{
+		{
+			name: "Add user 1",
+			args: args{user: &User{UserName: "测试用户2333", Password: "2333"}},
+		},
+		{
+			name: "Add user 2",
+			args: args{user: &User{UserName: "测试用户666", Password: "666"}},
+		},
 	}
-	fmt.Printf("%v", user_id)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := CreateUser(tt.args.user)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("CreateUser() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			t.Logf("CreateUser() success with result: %v", got)
+		})
+	}
 }
 
 func TestQueryUserById(t *testing.T) {
-	_ = Init()
-	user, err := QueryUserById(1)
-	if err != nil {
-		fmt.Printf("%v", err)
-		return
+	type args struct {
+		id uint
 	}
-
-	fmt.Printf("%+v\n", user)
+	tests := []struct {
+		name    string
+		args    args
+		want    *User
+		wantErr bool
+	}{
+		{
+			name: "Get user 1",
+			args: args{id: 1},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := QueryUserById(tt.args.id)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("QueryUserById() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			res, err := json.MarshalIndent(got, "", "  ")
+			t.Logf("QueryUserById() success with result\n %s", string(res))
+		})
+	}
 }
 
 func TestQueryUsers(t *testing.T) {
-	_ = Init()
-	users, err := QueryUsers()
-	if err != nil {
-		fmt.Printf("%v", err)
-		return
+	tests := []struct {
+		name    string
+		want    []*User
+		wantErr bool
+	}{
+		{
+			name: "Get all users",
+		},
 	}
-
-	fmt.Printf("%v", users)
-	bytes, _ := json.Marshal(users)
-	fmt.Printf("%s\n", string(bytes))
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := QueryUsers()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("QueryUsers() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			res, err := json.MarshalIndent(got, "", "  ")
+			t.Logf("QueryUsers() success with result\n %s", string(res))
+		})
+	}
 }
