@@ -21,6 +21,8 @@ func Init() (err error) {
 	// 本地调试的时候没有读取配置，`config.Config` 空指针解引用会 panic
 	// 这里设置一个默认值，给本地调试用
 	dsn := "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
+	// 设置 GORM 默认日志级别
+	level := logger.Error
 	if config.Config != nil {
 		dsn = fmt.Sprintf(
 			"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
@@ -30,17 +32,21 @@ func Init() (err error) {
 			config.Config.Database.Port,
 			config.Config.Database.Name,
 		)
+		// 启用 debug 模式，打印 SQL 语句
+		if config.Config.Server.RunMode == "debug" {
+			level = logger.Info
+		}
 	}
 	// GORM 配置参考
 	// https://gorm.io/zh_CN/docs/gorm_config.html
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		// 为了确保数据一致性，GORM 会在事务里执行写入操作（创建、更新、删除）
-		// 如果没有这方面的要求，可以在初始化时跳过默认事务
+		// 如果没有这方面的要求，可以在初始化时跳过默认事务，这将获得大约 30%+ 性能提升
 		SkipDefaultTransaction: true,
 		// 启用缓存以提高效率
 		PrepareStmt: true,
 		// 打印 GORM 为我们生成的 SQL
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(level),
 	})
 	return
 }

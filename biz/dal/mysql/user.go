@@ -37,7 +37,7 @@ func QueryUserById(id uint) (*User, error) {
 
 	// 需要注意，对单个对象使用 Find 而不带 limit
 	// db.Find(&user)将会查询整个表并且只返回第一个对象，这是性能不高并且不确定的。
-	result := DB.Where("id = ?", id).Limit(1).Find(&user)
+	result := DB.Model(&user).Preload("Articles").Where("id = ?", id).Limit(1).Find(&user)
 	if err := result.Error; err != nil {
 		return nil, err
 	}
