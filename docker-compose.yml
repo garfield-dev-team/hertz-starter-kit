@@ -58,3 +58,9 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  kafka2:
+    image: spotify/kafka
+    container_name: kafka2
+    ports:
+      - "9092:9092"
+      - "2181:2181"
