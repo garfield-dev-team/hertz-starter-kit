@@ -3,12 +3,20 @@
 package main
 
 import (
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"hertz-starter-kit/biz/dal"
 	"hertz-starter-kit/biz/middleware"
 	"hertz-starter-kit/pkg/config"
 	"hertz-starter-kit/pkg/logger"
+)
 
-	"github.com/cloudwego/hertz/pkg/app/server"
+// 在 -ldflags 参数中使用多个 -X 标志来设置不同的变量
+var (
+	version     = "development"
+	commit      = "N/A"
+	buildBranch string
+	buildTime   string
 )
 
 func main() {
@@ -18,6 +26,12 @@ func main() {
 	logger.SetupLogger()
 	// 连接数据库、自动迁移 schema
 	dal.SetupDataBase()
+
+	hlog.Infof("===Hertz app===\n")
+	hlog.Infof("Version: %s\n", version)
+	hlog.Infof("Commit: %s\n", commit)
+	hlog.Infof("Build branch: %s\n", buildBranch)
+	hlog.Infof("Build time:%s\n", buildTime)
 
 	h := server.Default(
 		server.WithHostPorts(":8080"),

@@ -14,15 +14,21 @@ COPY . ./
 RUN ./build.sh
 
 # 使用体积更小的基础镜像
-# FROM alpine:3.15 AS production
+# FROM alpine:3.15 AS final
 # Golang 项目推荐 scratch 镜像进一步减小体积
-FROM scratch as final
+# 需要注意 scratch 存在一些问题，比如没有 apk 命令，也不像 alpine 镜像内置 tzdata
+# 因此如果用 scratch 镜像，需要在 Golang 应用内部做时区配置
+FROM alpine:3.15 as final
 
 # 不要使用 root 权限运行应用
 RUN addgroup -g 10000 hertzapp
 RUN adduser -D -u 10000 -G hertzapp hertzapp
 
 USER hertzapp
+
+# 如果需要是用 TZ 环境变量 实现时区控制，需要安装 tzdata 这个包
+# debian 的基础镜像默认情况下已经安装了 tzdata，而 ubuntu 并没有
+# RUN apk add --no-cache tzdata
 
 # 设置时区
 # 在使用 Docker 容器时，系统默认的时区就是 UTC 时间（0 时区），和我们实际需要的北京时间相差八个小时
