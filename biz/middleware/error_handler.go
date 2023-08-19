@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"context"
+	"go.uber.org/zap"
 	"hertz-starter-kit/pkg/errcode"
 	"hertz-starter-kit/pkg/utils"
 
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/pkg/errors"
 )
 
@@ -17,11 +17,13 @@ func GlobalErrorHandler(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	log := zap.L().Named("GlobalErrorHandler")
+
 	hertzErr := c.Errors.Last()
 	// 获取errors包装的err
 	err := hertzErr.Unwrap()
 	// 打印异常堆栈
-	hlog.CtxErrorf(ctx, "%+v", err)
+	log.Error("", zap.Error(err))
 	resp := utils.NewResp(c)
 
 	// 注意这种写法断言失败会 panic

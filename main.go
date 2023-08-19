@@ -3,12 +3,13 @@
 package main
 
 import (
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"hertz-starter-kit/biz/dal"
 	"hertz-starter-kit/biz/middleware"
 	"hertz-starter-kit/pkg/config"
 	"hertz-starter-kit/pkg/logger"
+
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"go.uber.org/zap"
 )
 
 // 在 -ldflags 参数中使用多个 -X 标志来设置不同的变量
@@ -27,11 +28,16 @@ func main() {
 	// 连接数据库、自动迁移 schema
 	dal.SetupDataBase()
 
-	hlog.Infof("===Hertz app===\n")
-	hlog.Infof("Version: %s\n", version)
-	hlog.Infof("Commit: %s\n", commit)
-	hlog.Infof("Build branch: %s\n", buildBranch)
-	hlog.Infof("Build time:%s\n", buildTime)
+	// 何时用 Loggers，何时用 SugaredLoggers
+	// 对性能要求不高，可以用 SugaredLoggers，API 更友好
+	// 在 hot path 上建议用 Loggers，避免反射，提升性能
+	log := zap.S().Named("main")
+
+	log.Info("===Hertz app===")
+	log.Info("Version: ", version)
+	log.Info("Commit: ", commit)
+	log.Info("Build branch: ", buildBranch)
+	log.Info("Build time: ", buildTime)
 
 	h := server.Default(
 		server.WithHostPorts(":8080"),

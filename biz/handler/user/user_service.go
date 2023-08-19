@@ -9,8 +9,8 @@ import (
 	"hertz-starter-kit/pkg/utils"
 
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 // Register .
@@ -18,6 +18,8 @@ import (
 func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req user.RegisterRequest
+
+	log := zap.L().Named("handler")
 
 	// 注意，hertz 虽然也提供了一些 api 用于获取 query 参数、路径参数、body 、表单参数等
 	// 这里推荐直接用 `c.BindAndValidate` 参数绑定到结构体，不需要关心从哪里获取参数
@@ -31,7 +33,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	hlog.CtxInfof(ctx, "")
+	log.Info("register", zap.Any("req", req))
 
 	resp := new(user.RegisterResponse)
 
